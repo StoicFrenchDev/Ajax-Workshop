@@ -4,4 +4,13 @@
 
 {% block body %}
 
+<h1>Death List Five</h1>
+
+<section>
+    {% for enemy in killList %}
+        <h2>{{ loop.index }} {{ enemy.firstname}}</h2>
+        <h3>{{enemy.location}}</h3>
+    {% endfor %}
+</section>
+
 {% endblock %}
