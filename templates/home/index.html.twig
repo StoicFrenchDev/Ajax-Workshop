@@ -3,13 +3,32 @@
 {% block title %}My Little Kill List{% endblock %}
 
 {% block body %}
+{% for category, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endfor %}
+<section id="kill-list">
+    <h1>Death List Five</h1>
 
-<h1>Death List Five</h1>
-
-<section>
     {% for enemy in killList %}
-        <h2>{{ loop.index }} {{ enemy.firstname}}</h2>
-        <h3>{{enemy.location}}</h3>
+        <div class="details" >
+            <div >
+                <h2>{{ loop.index }}. <span>{{ enemy.firstname }} {{ enemy.lastname }}</span></h2>
+                <h3>{{ enemy.location }}</h3>
+            </div>
+            <div >
+                {% if enemy.isAlive == true %}
+                <h4>Alive</h4>
+                <a href="{{ path('confirmKill', {id:enemy.id}) }}">Confirm kill</a>
+                {% else %}
+                <h4>Dead</h4>
+                {% endif %}
+            </div>
+        </div>
+       <hr> 
     {% endfor %}
 </section>
 

@@ -7,4 +7,9 @@ import './bootstrap.js';
  */
 import './styles/app.css'
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉')
+setTimeout(function() {
+    var flashMessage = document.querySelector('div.alert');
+    if (flashMessage) {
+        flashMessage.remove();
+    }
+}, 5000);

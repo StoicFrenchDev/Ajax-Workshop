@@ -1,3 +1,30 @@
 body {
-    background-color: skyblue;
+    background-color: rgb(40, 47, 50);
+}
+
+#kill-list {
+    background-color: #f2f2f2;
+    width: 30%;
+    margin: auto;
+    padding: 15px;
+}
+
+.details{
+    display: flex;
+    justify-content: space-between;
+    padding-right: 15px;
+
+}
+
+.alert, span {
+    color: crimson;
+}
+
+h1 {
+    text-align: center;
+    text-decoration: underline;
+}
+
+h3 {
+    padding-left: 33px;
 }

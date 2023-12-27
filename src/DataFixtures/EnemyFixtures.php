@@ -5,11 +5,14 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Enemy;
+use Faker\Factory;
 
 class EnemyFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        $faker = Factory::create();
+
         $enemy1 = new Enemy();
         $enemy1->setFirstname("O-Ren");
         $enemy1->setLastname("Ishi");
@@ -42,6 +45,19 @@ class EnemyFixtures extends Fixture
         $enemy5->setIsAlive(true);
         $manager->persist($enemy5);
 
+
+        for($i = 0; $i < 50; $i++) {
+            $enemy6 = new Enemy();
+            $enemy6->setFirstname($faker->firstName());
+            $enemy6->setLastname($faker->lastName());
+            $enemy6->setLocation($faker->city());
+            $enemy6->setIsAlive(true);
+            $manager->persist($enemy6);
+
+        }
+
         $manager->flush();
     }
+
+    
 }
