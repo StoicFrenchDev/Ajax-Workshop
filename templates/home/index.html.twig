@@ -22,7 +22,8 @@
             <div >
                 {% if enemy.isAlive == true %}
                 <h4>Alive</h4>
-                <a href="{{ path('confirmKill', {id:enemy.id}) }}" ajax-link>Confirm kill</a>
+                <a href="{{ path('confirmKill', {id:enemy.id}) }}" data-ajax>Confirm kill</a>
+
                 {% else %}
                 <h4>Dead</h4>
                 {% endif %}

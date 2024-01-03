@@ -2,15 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Enemy;
+
 use App\Repository\EnemyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
-use function PHPUnit\Framework\isNull;
 
 class KillListController extends AbstractController
 {
@@ -42,18 +39,26 @@ class KillListController extends AbstractController
     #[Route('/{id}', name: 'confirmKill')]
     public function confirmKill(int $id,
     EnemyRepository $enemyRepository,
-    EntityManagerInterface $entityManager): JsonResponse
+    EntityManagerInterface $entityManager): Response
     {
-        $enemy = $enemyRepository->find($id);
-    
-        if ($enemy === null) {
-            return new JsonResponse(['message' => 'Something went wrong'], Response::HTTP_NOT_FOUND);
+        try {
+            $enemy = $enemyRepository->find($id);
+        
+            if ($enemy === null) {
+                return new Response(status: Response::HTTP_NOT_FOUND);
+            }
+        
+            $enemy->setIsAlive(false);
+            $entityManager->persist($enemy);
+            $entityManager->flush();
+        
+            return new Response(status: Response::HTTP_OK);
         }
-    
-        $enemy->setIsAlive(false);
-        $entityManager->persist($enemy);
-        $entityManager->flush();
-    
-        return new JsonResponse(['message' => 'Kill confirmed'], Response::HTTP_OK);
+        catch (\Exception $e) {
+            // Log the exception, if logging is set up
+            // error_log($e->getMessage());
+
+            return new Response(status: Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
