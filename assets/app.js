@@ -9,7 +9,7 @@ import './styles/app.css'
 
 // flash message
 setTimeout(function() {
-    var flashMessage = document.querySelector('div.alert');
+    const flashMessage = document.querySelector('div.alert');
     if (flashMessage) {
         flashMessage.remove();
     }
@@ -53,7 +53,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-
-
-// const detailsDiv = link.closest('.details');
-// detailsDiv.remove();

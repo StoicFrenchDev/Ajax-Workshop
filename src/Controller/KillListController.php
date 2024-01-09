@@ -21,21 +21,6 @@ class KillListController extends AbstractController
         ]);
     }
 
-    // #[Route('/{id}', name: 'confirmKill')]
-    // public function confirmKill(int $id, 
-    // EnemyRepository $enemyRepository, 
-    // EntityManagerInterface $entityManager): Response
-    // {
-    //     $enemy = $enemyRepository->find($id);
-    //     $enemy->setIsAlive(false);
-    //     $entityManager->persist($enemy);
-    //     $entityManager->flush();
-    
-    //     $this->addFlash('success', 'Kill confirmed');
-
-    //     return $this->redirectToRoute('home');
-    // }
-
     #[Route('/{id}', name: 'confirmKill')]
     public function confirmKill(int $id,
     EnemyRepository $enemyRepository,
@@ -57,7 +42,6 @@ class KillListController extends AbstractController
         catch (\Exception $e) {
             // Log the exception, if logging is set up
             // error_log($e->getMessage());
-
             return new Response(status: Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
