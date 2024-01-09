@@ -9,7 +9,7 @@ import './styles/app.css'
 
 // flash message
 setTimeout(function() {
-    var flashMessage = document.querySelector('div.alert');
+    const flashMessage = document.querySelector('div.alert');
     if (flashMessage) {
         flashMessage.remove();
     }
@@ -17,35 +17,39 @@ setTimeout(function() {
 
 // Ajax requets
 
-// We wait until the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    const links = document.querySelectorAll('a[ajax-link]');                // We, then select all links with the 'ajax-link' attribute
+    const confirmKillLinks = document.querySelectorAll('a[data-ajax]');
 
-    links.forEach(link => {
-        link.addEventListener('click', (event) => {                         // We attach a click event listener to each link
-            event.preventDefault();                                         // We prevent the default action of the link (which is to navigate to the URL)
-            const url = link.getAttribute('href');                          // We get the URL from the 'href' attribute of the clicked link
+    confirmKillLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            event.preventDefault();
+            const url = link.getAttribute('href');
 
             fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                                                                            // Check if the response message indicates a successful kill confirmation
-                    if (data.message === 'Kill confirmed') {
-                        // We update the DOM
-                        const enemyDiv = link.closest('.details');          // Find the closest ancestor element with the class '.details'
-                        enemyDiv.querySelector('h4').textContent = 'Dead';  // Update status
-                        link.remove();                                      // Remove the confirm kill link
+                .then(response => {
+                    if (response.status === 200) {
+                        // Kill confirmed, update the DOM
+                        const enemyDiv = link.closest('.details');
+                        enemyDiv.querySelector('h4').textContent = 'Dead';
+                        link.remove();
 
+                        alert('Kill confirmed successfully.');
+
+                    } else if (response.status === 404) {
+                        // Enemy not found, show an error message
+                        alert('Enemy not found.');
+                    } else if (response.status === 500) {
+                        // Internal Server Error, show an error message
+                        alert('A server error occurred.');
                     } else {
-                        alert(data.message);
+                        // Other HTTP status codes, show a generic error message
+                        alert('An error occurred.');
                     }
                 })
-                // Log any errors to the console and show an error message
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('A network error occurred.');
+                });
         });
     });
 });
-
-// We could also use this to simply remove the whole item from our list of targets
-// const detailsDiv = link.closest('.details');
-// detailsDiv.remove();
